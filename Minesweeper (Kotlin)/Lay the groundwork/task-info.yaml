@@ -96,17 +96,8 @@ files:
     }
   learner_created: false
 feedback_link: https://hyperskill.org/projects/8/stages/46/implement#comment
-status: Failed
+status: Solved
 feedback:
-  message: |-
-    Wrong answer in test #1
-
-    Your game field should contain at least 2 lines.
-
-    Please find below the output of your program during this failed test.
-
-    ---
-
-    Hello, World!
-  time: "Sun, 02 Apr 2023 23:15:33 UTC"
+  message: Congratulations!
+  time: "Sun, 02 Apr 2023 23:34:28 UTC"
 record: -1
