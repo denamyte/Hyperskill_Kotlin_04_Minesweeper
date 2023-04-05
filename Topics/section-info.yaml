@@ -8,3 +8,5 @@ content:
 - Constructors
 - Member functions
 - Extension functions
+- Jumps and returns
+- Property accessors
