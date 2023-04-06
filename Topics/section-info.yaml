@@ -10,3 +10,5 @@ content:
 - Extension functions
 - Jumps and returns
 - Property accessors
+- If expression
+- Secondary constructor
