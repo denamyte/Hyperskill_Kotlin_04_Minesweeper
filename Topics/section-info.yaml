@@ -12,3 +12,5 @@ content:
 - Property accessors
 - If expression
 - Secondary constructor
+- When expression
+- Enum
