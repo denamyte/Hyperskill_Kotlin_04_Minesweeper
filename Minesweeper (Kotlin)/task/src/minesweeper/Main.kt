@@ -1,8 +1,5 @@
 package minesweeper
 
-const val FIELD_HEIGHT = 9
-const val FIELD_WIDTH = 9
-const val MINES_PROMPT = "How many mines do you want on the field? "
 
 fun main() {
     val mineCount = inputInt(MINES_PROMPT)
