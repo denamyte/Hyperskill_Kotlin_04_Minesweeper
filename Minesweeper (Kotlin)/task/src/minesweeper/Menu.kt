@@ -3,6 +3,9 @@ package minesweeper
 const val FIELD_HEIGHT = 9
 const val FIELD_WIDTH = 9
 const val MINES_PROMPT = "How many mines do you want on the field? "
+const val CRD_PROMPT = "Set/delete mines marks (x and y coordinates): "
+const val NUMBER_WARNING = "There is a number here!"
+const val CONGRATS = "Congratulations! You found all the mines!"
 
 class Menu() {
     private lateinit var field: Field
@@ -11,17 +14,28 @@ class Menu() {
         field = Field(
             FIELD_HEIGHT,
             FIELD_WIDTH,
-            inputInt(MINES_PROMPT)
+            inputMinesCount()
         )
 
         while (!field.finishConditions()) {
-            TODO("the logic loop should be here")
+            field.print()
+
+            while (!field.placeOrRemoveMine(inputCoordinates()))
+                println(NUMBER_WARNING)
         }
+
+        field.print()
+        println(CONGRATS)
     }
 
-    private fun inputInt(prompt: String): Int {
-        print(prompt)
+    private fun inputMinesCount(): Int {
+        print(MINES_PROMPT)
         return readln().toInt()
+    }
+
+    private fun inputCoordinates(): Point {
+        print(CRD_PROMPT)
+        return Point(readln().split(" ").map(String::toInt).map { it - 1 })
     }
 
 }

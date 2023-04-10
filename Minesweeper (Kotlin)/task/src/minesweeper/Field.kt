@@ -3,9 +3,31 @@ package minesweeper
 import kotlin.random.Random
 
 const val MINE = 'X'
+const val USER_MINE = '*'
 const val SAFE_CELL = '.'
 const val FIELD_FOOTER = "—│—————————│"
-const val FIELD_HEADER = " │123456789│\n$FIELD_FOOTER"
+const val FIELD_HEADER = "\n │123456789│\n$FIELD_FOOTER"
+val NUMBERS = '1'..'8'
+
+class Point(val x: Int, val y: Int) {
+    constructor(list :List<Int>) : this(list[0], list[1])
+}
+
+enum class PointState() {
+    Mine,
+    SafeCell,
+    Number,
+    Undefined;
+
+    companion object {
+        fun getState (char: Char): PointState = when (char) {
+            MINE, USER_MINE -> Mine
+            SAFE_CELL -> SafeCell
+            in NUMBERS -> Number
+            else -> Undefined
+        }
+    }
+}
 
 class Field(private val height: Int,
             private val width: Int,
@@ -69,7 +91,40 @@ class Field(private val height: Int,
         println(FIELD_FOOTER)
     }
 
-    fun finishConditions(): Boolean {
-        return foundMines == mineCount && wrongMines == 0
+    fun finishConditions(): Boolean =
+        foundMines == mineCount && wrongMines == 0
+
+
+    private fun pointState(p: Point, field: List<MutableList<Char>>) =
+        PointState.getState(field[p.y][p.x])
+
+    private fun getUserState(p: Point): PointState = pointState(p, userCells)
+
+    private fun getState(p: Point): PointState = pointState(p, cells)
+
+    private fun setField(p: Point, c: Char) {
+        userCells[p.y][p.x] = c
+    }
+
+    private fun changeMinesCounts(p: Point, v: Int) {
+        if (getState(p) == PointState.Mine) {
+            foundMines += v
+        } else {
+            wrongMines += v
+        }
+    }
+
+    fun placeOrRemoveMine(p: Point): Boolean = when (getUserState(p)) {
+        PointState.Mine -> {
+            setField(p, SAFE_CELL)
+            changeMinesCounts(p, -1)
+            true
+        }
+        PointState.SafeCell -> {
+            setField(p, USER_MINE)
+            changeMinesCounts(p, 1)
+            true
+        }
+        PointState.Number, PointState.Undefined -> false
     }
 }
