@@ -4,7 +4,8 @@ import kotlin.random.Random
 
 const val MINE = 'X'
 const val USER_MINE = '*'
-const val SAFE_CELL = '.'
+const val HIDDEN_CELL = '.'
+const val OPEN_CELL = '/'
 const val FIELD_FOOTER = "—│—————————│"
 const val FIELD_HEADER = "\n │123456789│\n$FIELD_FOOTER"
 val NUMBERS = '1'..'8'
@@ -13,16 +14,16 @@ class Point(val x: Int, val y: Int) {
     constructor(list :List<Int>) : this(list[0], list[1])
 }
 
-enum class PointState() {
+enum class PoinType {
     Mine,
-    SafeCell,
+    OpenCell,
     Number,
     Undefined;
 
     companion object {
-        fun getState (char: Char): PointState = when (char) {
-            MINE, USER_MINE -> Mine
-            SAFE_CELL -> SafeCell
+        fun getType (char: Char): PoinType = when (char) {
+            MINE -> Mine
+            OPEN_CELL -> OpenCell
             in NUMBERS -> Number
             else -> Undefined
         }
@@ -35,7 +36,7 @@ class Field(private val height: Int,
 
     private val heightIndices = 0 until height
     private val widthIndices = 0 until width
-    private val cells = List(height) { MutableList(width) { SAFE_CELL } }
+    private val cells = List(height) { MutableList(width) { HIDDEN_CELL } }
     private var userCells: List<MutableList<Char>> = emptyList()
     private var foundMines = 0
     private var wrongMines = 0
@@ -52,7 +53,7 @@ class Field(private val height: Int,
         while (remain > 0) {
             val y = random.nextInt(height)
             val x = random.nextInt(width)
-            if (cells[y][x] == SAFE_CELL) {
+            if (cells[y][x] == HIDDEN_CELL) {
                 remain--
                 cells[y][x] = MINE
             }
@@ -65,7 +66,7 @@ class Field(private val height: Int,
 
         for (y in 0 until height) {
             for (x in 0 until width) {
-                if (cells[y][x] == SAFE_CELL) {
+                if (cells[y][x] == HIDDEN_CELL) {
                     val mines = mutableListOf<Boolean>()
                     for (lookY in y - 1..y + 1)
                         for (lookX in x - 1..x + 1) mines += isMine(lookY, lookX)
@@ -79,7 +80,7 @@ class Field(private val height: Int,
     private fun copyToUserCells() {
         userCells = cells.map {
             it.map {
-                cell -> if (cell == MINE) SAFE_CELL else cell
+                cell -> if (cell == MINE) HIDDEN_CELL else cell
             }.toMutableList()
         }
     }
@@ -96,18 +97,18 @@ class Field(private val height: Int,
 
 
     private fun pointState(p: Point, field: List<MutableList<Char>>) =
-        PointState.getState(field[p.y][p.x])
+        PoinType.getType(field[p.y][p.x])
 
-    private fun getUserState(p: Point): PointState = pointState(p, userCells)
+    private fun getUserState(p: Point): PoinType = pointState(p, userCells)
 
-    private fun getState(p: Point): PointState = pointState(p, cells)
+    private fun getState(p: Point): PoinType = pointState(p, cells)
 
     private fun setField(p: Point, c: Char) {
         userCells[p.y][p.x] = c
     }
 
     private fun changeMinesCounts(p: Point, v: Int) {
-        if (getState(p) == PointState.Mine) {
+        if (getState(p) == PoinType.Mine) {
             foundMines += v
         } else {
             wrongMines += v
@@ -115,16 +116,16 @@ class Field(private val height: Int,
     }
 
     fun placeOrRemoveMine(p: Point): Boolean = when (getUserState(p)) {
-        PointState.Mine -> {
-            setField(p, SAFE_CELL)
+        PoinType.Mine -> {
+            setField(p, HIDDEN_CELL)
             changeMinesCounts(p, -1)
             true
         }
-        PointState.SafeCell -> {
+        PoinType.OpenCell -> {
             setField(p, USER_MINE)
             changeMinesCounts(p, 1)
             true
         }
-        PointState.Number, PointState.Undefined -> false
+        PoinType.Number, PoinType.Undefined -> false
     }
 }

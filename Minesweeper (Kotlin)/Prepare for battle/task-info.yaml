@@ -576,6 +576,9 @@ files:
 - name: src/minesweeper/Menu.kt
   visible: true
   learner_created: true
+- name: src/minesweeper/Field2.kt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/7689#comment
 status: Solved
 feedback:
