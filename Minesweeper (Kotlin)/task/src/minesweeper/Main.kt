@@ -1,3 +1,3 @@
 package minesweeper
 
-fun main() = Menu().run2()
+fun main() = runMenu()
