@@ -1,0 +1,17 @@
+type: code
+files:
+- name: src/Main.kt
+  visible: true
+  text: |-
+    fun doubleFormat(value: Double, width: Int, precision: Int): String {
+        // write your code here
+
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/21446#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Thu, 13 Apr 2023 17:51:58 UTC"
+record: -1
+submission_language: kotlin

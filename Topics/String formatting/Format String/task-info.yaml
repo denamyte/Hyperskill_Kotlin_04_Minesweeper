@@ -1,0 +1,21 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: This format string is invalid.
+- text: It justifies the number to the left.
+- text: It can be applied to Short and BigInteger numbers.
+- text: Negative numbers are represented without the minus sign.
+files:
+- name: src/Main.kt
+  visible: true
+  text: |
+    // You can experiment here, it won’t be checked
+
+    fun main(args: Array<String>) {
+      // put your code here
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/21444#comment
+status: Solved
+record: -1
+local_check: false

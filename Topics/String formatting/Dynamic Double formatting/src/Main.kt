@@ -1,0 +1,1 @@
+fun doubleFormat(v: Double, w: Int, p: Int) = "%$w.${p}f".format(v)

@@ -15,3 +15,6 @@ content:
 - When expression
 - Enum
 - Characters
+- While loops
+- Hierarchy of exceptions
+- String formatting
